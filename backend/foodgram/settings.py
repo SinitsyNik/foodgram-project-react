@@ -9,7 +9,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.getenv(key='SECRET_KEY', default='9%@7b-d193#261d_$282vvkt7jft20)=7p25vt*fgy&-(5la+%')
 
-DEBUG = True
+DEBUG = os.getenv('DEBUG', default=False)
 
 ALLOWED_HOSTS = ['*', 'localhost']
 
@@ -63,21 +63,14 @@ WSGI_APPLICATION = 'foodgram.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': os.getenv(key='DB_ENGINE', default='django.db.backends.postgresql'),
+        'NAME': os.getenv(key='DB_NAME', default='postgres'),
+        'USER': os.getenv(key='POSTGRES_USER', default='postgres'),
+        'PASSWORD': os.getenv(key='POSTGRES_PASSWORD', default='password'),
+        'HOST': os.getenv(key='DB_HOST', default='db'),
+        'PORT': os.getenv(key='DB_PORT', default='5432'),
     }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': os.getenv(key='DB_ENGINE', default='django.db.backends.postgresql'),
-#         'NAME': os.getenv(key='DB_NAME', default='postgres'),
-#         'USER': os.getenv(key='POSTGRES_USER', default='postgres'),
-#         'PASSWORD': os.getenv(key='POSTGRES_PASSWORD', default='password'),
-#         'HOST': os.getenv(key='DB_HOST', default='db'),
-#         'PORT': os.getenv(key='DB_PORT', default='5432'),
-#     }
-# }
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -142,3 +135,6 @@ DJOSER = {
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_URLS_REGEX = r'^/api/.*$'
+
+
+FILENAME = 'shopping_cart.txt'

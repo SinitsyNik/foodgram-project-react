@@ -17,7 +17,7 @@ class Tag(models.Model):
         (PURPLE, 'Фиолетовый'),
     ]
     name = models.CharField(
-        max_length=200,
+        max_length=20,
         verbose_name='Название тэга',
         unique=True,
     )
@@ -29,7 +29,7 @@ class Tag(models.Model):
         null=True,
     )
     slug = models.SlugField(
-        max_length=200,
+        max_length=20,
         verbose_name='Уникальный слаг',
         unique=True,
     )
@@ -45,11 +45,11 @@ class Tag(models.Model):
 
 class Ingredient(models.Model):
     name = models.CharField(
-        max_length=200,
+        max_length=100,
         verbose_name='Название ингредиента',
     )
     measurement_unit = models.CharField(
-        max_length=200,
+        max_length=20,
         verbose_name='Единицы измерения',
     )
 
@@ -173,11 +173,11 @@ class RecipeIngredient(models.Model):
         verbose_name='Рецепт',
         related_name='recipe_ingredients',
     )
-    amount = models.PositiveSmallIntegerField(
+    amount = models.FloatField(
         verbose_name='Количество',
         default=1,
         validators=[MinValueValidator(
-            1, message='Минимальное количество ингридиентов 1'),
+            0.1, message='Минимальное количество ингридиентов 0.1'),
         ]
     )
 
