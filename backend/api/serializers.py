@@ -182,7 +182,8 @@ class RecipeSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Заполните теги!')
         return tags
 
-    def create_recipe_ingredients(self, ingredients, recipe):
+    @staticmethod
+    def create_recipe_ingredients(ingredients, recipe):
         create_ingredient = [
             RecipeIngredient(
                 recipe=recipe,

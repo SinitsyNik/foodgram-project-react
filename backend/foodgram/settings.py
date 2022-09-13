@@ -137,4 +137,4 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_URLS_REGEX = r'^/api/.*$'
 
 
-FILENAME = 'shopping_cart.txt'
+SHOPPING_CART_FILENAME = 'shopping_cart.txt'

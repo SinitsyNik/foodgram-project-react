@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from .pagination import LimitPageNumberPagination
 from .filters import IngredientFilter, RecipeFilter
 from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly
-from .services import count_shopping_cart
+from .services import get_ingredients_for_shopping
 from .serializers import (
     TagSerializer,
     IngredientSerializer,
@@ -22,7 +22,7 @@ from users.models import Follow
 from recipes.models import (
     Ingredient, Recipe, ShoppingCart, Tag, Favorite
 )
-from foodgram.settings import FILENAME
+from django.conf import settings
 
 
 User = get_user_model()
@@ -108,7 +108,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def delete_shopping_cart(self, request, pk=None):
         return self.delete_obj(ShoppingCart, request.user, pk)
 
-    def add_obj(self, model, user, pk):
+    @staticmethod
+    def add_obj(model, user, pk):
         if model.objects.filter(user=user, recipe__id=pk).exists():
             return Response(status=status.HTTP_400_BAD_REQUEST)
         recipe = get_object_or_404(Recipe, id=pk)
@@ -116,7 +117,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         serializer = MiniRecipeSerializer(recipe)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def delete_obj(self, model, user, pk):
+    @staticmethod
+    def delete_obj(model, user, pk):
         obj = model.objects.filter(user=user, recipe__id=pk)
         if obj.exists():
             obj.delete()
@@ -127,7 +129,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
             permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request):
         user = request.user
-        txt_file = count_shopping_cart(user)
+        txt_file = get_ingredients_for_shopping(user)
         response = HttpResponse(txt_file, content_type='text/plain')
-        response['Content-Disposition'] = f'attachment; filename={FILENAME}'
+        response['Content-Disposition'] = (
+            f'attachment; filename={settings.SHOPPING_CART_FILENAME}'
+        )
         return response
