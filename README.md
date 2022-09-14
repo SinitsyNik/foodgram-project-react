@@ -4,6 +4,14 @@
 ## Описание:
 «Продуктовый помощник»: сайт, на котором пользователи могут публиковать рецепты, добавлять чужие рецепты в избранное и подписываться на публикации других авторов. Сервис «Список покупок» позволит пользователям создавать список продуктов, которые нужно купить для приготовления выбранных блюд.
 
+Проект запущен по адресу:
+<http://51.250.106.212/>
+<http://foodgram-project.hopto.org/>
+
+Админ панель:
+<http://51.250.106.212/admin/>
+<http://foodgram-project.hopto.org/admin/>
+
 
 ## Как запустить:
 
@@ -45,6 +53,7 @@ TELEGRAM_TOKEN - токен бота
 DB_NAME - postgres 
 POSTGRES_USER - postgres
 POSTGRES_PASSWORD - postgres
+DEBUG - True
 ```
 
 ## Локальный запуск :
@@ -86,6 +95,7 @@ sudo docker-compose down -v
 ## Дополнительно:
 В директории infra создать фаил .env и заполнить
 ```
+DEBUG=True
 DB_ENGINE=django.db.backends.postgresql
 DB_NAME=postgres
 POSTGRES_USER=postgres
@@ -104,8 +114,6 @@ DB_PORT=5432
 - nginx
 - postgreSQL
 
-## Список доступных команд:
-Подробное описание всех эндпоинтов можно найти по адресу http://51.250.106.212/api/docs/redoc/
 
 ## Автор:
 
