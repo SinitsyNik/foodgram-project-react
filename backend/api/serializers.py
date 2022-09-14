@@ -183,7 +183,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         return tags
 
     @staticmethod
-    def create_recipe_ingredients(ingredients, recipe):
+    def _create_recipe_ingredients(ingredients, recipe):
         create_ingredient = [
             RecipeIngredient(
                 recipe=recipe,
@@ -201,7 +201,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             self.initial_data.get('tags')
         )
         recipe = Recipe.objects.create(**validated_data)
-        self.create_recipe_ingredients(
+        self._create_recipe_ingredients(
             ingredients,
             recipe
         )
@@ -214,7 +214,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         recipe = super().update(recipe, validated_data)
         if ingredients:
             recipe.ingredients.clear()
-            self.create_recipe_ingredients(ingredients, recipe)
+            self._create_recipe_ingredients(ingredients, recipe)
         if tags:
             recipe.tags.set(tags)
         return recipe

@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, HttpResponse
-from djoser.views import UserViewSet
 from django.contrib.auth import get_user_model
+from django.conf import settings
+from djoser.views import UserViewSet
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -22,7 +23,6 @@ from users.models import Follow
 from recipes.models import (
     Ingredient, Recipe, ShoppingCart, Tag, Favorite
 )
-from django.conf import settings
 
 
 User = get_user_model()
@@ -93,23 +93,23 @@ class RecipeViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'],
             permission_classes=[IsAuthenticated])
     def favorite(self, request, pk=None):
-        return self.add_obj(Favorite, request.user, pk)
+        return self._add_obj(Favorite, request.user, pk)
 
     @favorite.mapping.delete
     def delete_favorite(self, request, pk=None):
-        return self.delete_obj(Favorite, request.user, pk)
+        return self._delete_obj(Favorite, request.user, pk)
 
     @action(detail=True, methods=['post'],
             permission_classes=[IsAuthenticated])
     def shopping_cart(self, request, pk=None):
-        return self.add_obj(ShoppingCart, request.user, pk)
+        return self._add_obj(ShoppingCart, request.user, pk)
 
     @shopping_cart.mapping.delete
     def delete_shopping_cart(self, request, pk=None):
-        return self.delete_obj(ShoppingCart, request.user, pk)
+        return self._delete_obj(ShoppingCart, request.user, pk)
 
     @staticmethod
-    def add_obj(model, user, pk):
+    def _add_obj(model, user, pk):
         if model.objects.filter(user=user, recipe__id=pk).exists():
             return Response(status=status.HTTP_400_BAD_REQUEST)
         recipe = get_object_or_404(Recipe, id=pk)
@@ -118,7 +118,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @staticmethod
-    def delete_obj(model, user, pk):
+    def _delete_obj(model, user, pk):
         obj = model.objects.filter(user=user, recipe__id=pk)
         if obj.exists():
             obj.delete()
