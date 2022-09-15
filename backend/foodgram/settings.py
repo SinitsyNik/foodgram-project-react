@@ -9,7 +9,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.getenv(key='SECRET_KEY', default='9%@7b-d193#261d_$282vvkt7jft20)=7p25vt*fgy&-(5la+%')
 
-DEBUG = os.getenv('DEBUG', default=False)
+DEBUG = os.getenv(key='DEBUG', default=False)
 
 ALLOWED_HOSTS = ['*', 'localhost']
 
@@ -60,6 +60,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'foodgram.wsgi.application'
 
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 DATABASES = {
     'default': {

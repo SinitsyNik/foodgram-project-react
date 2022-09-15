@@ -170,12 +170,15 @@ class RecipeSerializer(serializers.ModelSerializer):
             return False
         return user.shopping_cart.filter(recipe=obj).exists()
 
-    def validate_ingredients(self, ingredients):
+    def validate_ingredients(self, data):
+        ingredients = self.initial_data.get('ingredients')
         if not ingredients:
-            raise serializers.ValidationError(
-                'Заполните ингредиенты!'
-            )
-        return ingredients
+            raise serializers.ValidationError('Заполните ингредиенты!')
+        for ingredient_item in ingredients:
+            amount = ingredient_item.get('amount')
+            if float(amount) <= 0:
+                raise serializers.ValidationError('Ингредиент меньше нуля!')
+            return data
 
     def validate_tags(self, tags):
         if not tags:

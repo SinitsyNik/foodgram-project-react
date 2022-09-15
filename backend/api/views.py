@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, HttpResponse
 from django.contrib.auth import get_user_model
 from django.conf import settings
 from djoser.views import UserViewSet
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
@@ -84,6 +85,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     permission_classes = [IsOwnerOrReadOnly]
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
+    filter_backends = [DjangoFilterBackend]
     filter_class = RecipeFilter
     pagination_class = LimitPageNumberPagination
 
